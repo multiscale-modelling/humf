@@ -11,7 +11,7 @@ readme = "README.md"
 packages = [{ include = "humf", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
