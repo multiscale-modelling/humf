@@ -12,10 +12,11 @@ packages = [{ include = "humf", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-keras = "^3.4.1"
 torch = "^2.3.1"
 torchvision = "^0.18.1"
 torchaudio = "^2.3.1"
+torch-geometric = "^2.5.3"
+lightning = "^2.3.3"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.7.1"
