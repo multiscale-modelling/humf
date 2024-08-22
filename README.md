@@ -2,7 +2,8 @@
 
 ## Installation
 
-Install this project with [poetry](https://python-poetry.org):
+Install this project with [poetry](https://python-poetry.org).
+Note that if you have a virtual environment activated (e.g. a `conda` environment), `poetry install` will install this project and its dependencies into that environment. Otherwise, poetry will create a virtual environment.
 
 ```
 git clone git@gitlab.kit.edu:kit/ag_wenzel/humf.git
@@ -10,7 +11,8 @@ cd humf
 poetry install
 ```
 
-Activate the environment:
+Activate the environment.
+Note that this is not necessary if you had a virtual environment active when running `poetry install`.
 
 ```
 poetry shell
@@ -24,7 +26,7 @@ pre-commit install
 
 ## Testing
 
-Run tests with [pytest](https://docs.pytest.org):
+Run tests with [pytest](https://docs.pytest.org).
 
 ```
 pytest
