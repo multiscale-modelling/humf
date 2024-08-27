@@ -25,3 +25,6 @@ numpy = "~1"
 pre-commit = "^3.7.1"
 pytest = "^8.2.1"
 ipykernel = "^6.29.5"
+
+[tool.isort]
+profile = "black"
