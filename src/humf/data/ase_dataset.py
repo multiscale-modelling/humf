@@ -29,7 +29,7 @@ class ASEDataset(InMemoryDataset):
 
     def process(self):
         atoms_list = io.read(self.raw_paths[0], ":")
-        assert type(atoms_list) == list[Atoms]
+        assert type(atoms_list) is list[Atoms]
         data_list = []
         for atoms in atoms_list:
             positions = torch.tensor(atoms.get_positions(), dtype=torch.float32)
