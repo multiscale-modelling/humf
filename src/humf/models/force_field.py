@@ -58,7 +58,7 @@ class ForceField(L.LightningModule):
 
     def _common_step(self, batch):
         predicted_energy, predicted_forces = self(batch)
-        target_energy, target_forces = batch.y, batch.x
+        target_energy, target_forces = batch.energy, batch.forces
         # Divide energy MSE loss by batch size.
         loss_energy = torch.nn.functional.mse_loss(
             predicted_energy, target_energy, reduction="mean"
