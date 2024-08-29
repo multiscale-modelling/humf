@@ -11,6 +11,8 @@ from torch import nn
 # For example, when we use this layer for OHH molecules,
 # `mol_params[1]` should be identical to `mol_params[2]`.
 
+# TODO: Should we allow for inital values for the parameters?
+
 
 class AtomCenteredStatic(nn.Module):
     def __init__(self, num_atoms_per_mol, num_params_per_atom):
