@@ -32,7 +32,7 @@ poetry:
   rules:
     - changes:
         - poetry.lock
-    - when: manual
+  when: manual
   cache:
     key: $CI_COMMIT_REF_SLUG
     paths:
