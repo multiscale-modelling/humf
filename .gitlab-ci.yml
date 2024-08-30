@@ -32,14 +32,15 @@ poetry:
   rules:
     - changes:
         - poetry.lock
-    - when: delayed
+    - when: manual
+      allow_failure: true
   cache:
     key: $CI_COMMIT_REF_SLUG
     paths:
       # - $PIP_CACHE_DIR
       - $POETRY_DIR
       - $VENV_DIR
-    policy: push
+    policy: pull-push
   before_script:
     - echo Installing dependencies ...
   script:
