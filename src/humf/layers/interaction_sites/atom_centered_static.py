@@ -27,7 +27,7 @@ class AtomCenteredStatic(nn.Module):
         num_molecules = batch.pos.shape[0] // self.num_atoms_per_mol
         sites_params = self.mol_params.repeat(num_molecules, 1)
         sites_batch = batch.batch
-        sites_mol = torch.arange(num_molecules).repeat_interleave(
-            self.num_atoms_per_mol
-        )
+        sites_mol = torch.arange(
+            num_molecules, device=sites_batch.device
+        ).repeat_interleave(self.num_atoms_per_mol)
         return sites_pos, sites_params, sites_batch, sites_mol
