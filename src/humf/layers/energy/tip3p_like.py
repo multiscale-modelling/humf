@@ -27,7 +27,7 @@ class Tip3pLike(nn.Module):
         ).unsqueeze(1)
 
         distances, params, frames = self.get_pairs(*self.lennard_jones_sites(batch))
-        lj_contribs = self.lj(distances, params[:, 0], params[:, 1])
+        lj_contribs = self.lennard_jones(distances, params[:, 0], params[:, 1])
         lj_energy = scatter(lj_contribs, frames, dim_size=batch.batch_size).unsqueeze(1)
 
         return coulomb_energy + lj_energy
