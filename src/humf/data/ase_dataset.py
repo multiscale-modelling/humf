@@ -1,5 +1,5 @@
 import torch
-from ase import Atoms, io
+from ase import io
 from torch_geometric.data import Data, InMemoryDataset
 
 
@@ -29,7 +29,8 @@ class ASEDataset(InMemoryDataset):
 
     def process(self):
         atoms_list = io.read(self.raw_paths[0], ":")
-        assert type(atoms_list) is list[Atoms]
+        print(type(atoms_list))
+        assert type(atoms_list) is list
         data_list = []
         for atoms in atoms_list:
             positions = torch.tensor(atoms.get_positions(), dtype=torch.float32)
