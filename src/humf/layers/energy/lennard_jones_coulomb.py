@@ -1,21 +1,16 @@
 import torch
-from torch import nn
+from torch.nn import Module
 from torch_geometric.utils import scatter
 
 from humf.layers.energy.coulomb import Coulomb
 from humf.layers.energy.lennard_jones import LennardJones
-from humf.layers.interaction_sites.atom_centered_static import AtomCenteredStatic
 
 
-class Tip3pLike(nn.Module):
-    def __init__(self):
+class LennardJonesCoulomb(Module):
+    def __init__(self, lennard_jones_sites: Module, coulomb_sites: Module):
         super().__init__()
-        self.lennard_jones_sites = AtomCenteredStatic(
-            num_atoms_per_mol=3, num_params_per_atom=2
-        )
-        self.coulomb_sites = AtomCenteredStatic(
-            num_atoms_per_mol=3, num_params_per_atom=1
-        )
+        self.lennard_jones_sites = lennard_jones_sites
+        self.coulomb_sites = coulomb_sites
         self.lennard_jones = LennardJones()
         self.coulomb = Coulomb()
 
