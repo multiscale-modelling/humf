@@ -1,13 +1,12 @@
-from math import pi as PI
-
+from scipy import constants as c
 from torch import nn
 
-ANGSTROM = 1e-10  # m
-ELEMENTARY_CHARGE = 1.602176634e-19  # C
-KCAL = 4184  # J
-MOL = 6.02214076e23  # Avogadro's number
-
-EPSILON_0 = 8.854187817e-12  # C/(Vm)
+# fmt: off
+CONVERSION_FACTOR = (
+    (c.elementary_charge**2 * c.Avogadro)
+    / (4 * c.pi * c.epsilon_0 * c.angstrom * c.kilo * c.calorie)
+)
+# fmt: on
 
 
 class Coulomb(nn.Module):
@@ -34,9 +33,4 @@ class Coulomb(nn.Module):
             Tensor of shape (num_pairs,) with the electrostatic energies between pairs of charges,
             in units of kcal/mol.
         """
-        return (
-            (1 / (4 * PI * EPSILON_0))
-            * (charges_1 * charges_2 * ELEMENTARY_CHARGE**2 / (distances * ANGSTROM))
-            / KCAL
-            * MOL
-        )
+        return CONVERSION_FACTOR * charges_1 * charges_2 / distances
