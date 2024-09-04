@@ -32,4 +32,31 @@ class LennardJones(nn.Module):
         r = sigma / distances
         r6 = r**6
         r12 = r6**2
-        return 4 * epsilon * (r12 - r6)
+        energy = 4 * epsilon * (r12 - r6)
+
+        # # DEBUG: Assert that all intermediate values are not NaN.
+        # assert not torch.isnan(epsilon).any()
+        # assert not torch.isnan(sigma).any()
+        # assert not torch.isnan(r).any()
+        # assert not torch.isnan(r6).any()
+        # assert not torch.isnan(r12).any()
+        # assert not torch.isnan(energy).any()
+        #
+        # # DEBUG: Assert that all intermediate values are finite.
+        # assert torch.isfinite(epsilon).all()
+        # assert torch.isfinite(sigma).all()
+        # assert torch.isfinite(r).all()
+        # assert torch.isfinite(r6).all()
+        # assert torch.isfinite(r12).all()
+        # assert torch.isfinite(energy).all()
+        #
+        # # DEBUG: Print max and min of all intermediate values.
+        # print("distances", distances.min(), distances.max())
+        # print("epsilon", epsilon.min(), epsilon.max())
+        # print("sigma", sigma.min(), sigma.max())
+        # print("r", r.min(), r.max())
+        # print("r6", r6.min(), r6.max())
+        # print("r12", r12.min(), r12.max())
+        # print("energy", energy.min(), energy.max())
+
+        return energy
