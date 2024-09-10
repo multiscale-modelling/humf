@@ -15,15 +15,11 @@ class ASEDataset(InMemoryDataset):
         pre_transform=None,
         pre_filter=None,
         force_reload=True,
-        raise_on_nan=True,
     ):
         super().__init__(
             root, transform, pre_transform, pre_filter, force_reload=force_reload
         )
         self.load(self.processed_paths[0])
-        # for data in self:
-        #     if raise_on_nan and has_nans(data):
-        #         raise ValueError("Data contains NaNs.")
 
     @property
     def raw_file_names(self):
@@ -50,5 +46,7 @@ class ASEDataset(InMemoryDataset):
                 energy=energy,
                 **info,
             )
+            if has_nans(data):
+                raise ValueError("Data contains NaNs.")
             data_list.append(data)
         self.save(data_list, self.processed_paths[0])
