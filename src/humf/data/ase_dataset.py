@@ -14,7 +14,7 @@ class ASEDataset(InMemoryDataset):
         transform=None,
         pre_transform=None,
         pre_filter=None,
-        force_reload=False,
+        force_reload=True,
         raise_on_nan=True,
     ):
         super().__init__(
