@@ -2,6 +2,8 @@ import torch
 from ase import io
 from torch_geometric.data import Data, InMemoryDataset
 
+from humf.data.utils import has_nans
+
 
 class ASEDataset(InMemoryDataset):
     """Read dataset from an XYZ file written by ASE."""
