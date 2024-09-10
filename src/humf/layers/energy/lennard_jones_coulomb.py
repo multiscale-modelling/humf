@@ -15,6 +15,8 @@ class LennardJonesCoulomb(Module):
         self.coulomb = Coulomb()
 
     def forward(self, batch):
+        print("DEBUG: ", batch.batch.device)
+
         distances, charges, frames = self.get_pairs(*self.coulomb_sites(batch))
         coulomb_contribs = self.coulomb(distances, charges[:, 0, 0], charges[:, 1, 0])
         coulomb_energy = scatter(
