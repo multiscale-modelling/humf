@@ -21,9 +21,9 @@ class ASEDataset(InMemoryDataset):
             root, transform, pre_transform, pre_filter, force_reload=force_reload
         )
         self.load(self.processed_paths[0])
-        for data in self:
-            if raise_on_nan and has_nans(data):
-                raise ValueError("Data contains NaNs.")
+        # for data in self:
+        #     if raise_on_nan and has_nans(data):
+        #         raise ValueError("Data contains NaNs.")
 
     @property
     def raw_file_names(self):
