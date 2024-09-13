@@ -17,11 +17,13 @@ class AtomCenteredStatic(nn.Module):
         self,
         num_atoms_per_mol: int,
         num_params_per_atom: int,
-        initial_params: Tensor,
+        initial_params,
     ):
         super().__init__()
         assert initial_params.shape == (num_atoms_per_mol, num_params_per_atom)
-        self.mol_params = nn.Parameter(initial_params)
+        self.mol_params = nn.Parameter(
+            torch.tensor(initial_params, dtype=torch.float32)
+        )
         self.num_atoms_per_mol = num_atoms_per_mol
 
     def forward(self, batch):
