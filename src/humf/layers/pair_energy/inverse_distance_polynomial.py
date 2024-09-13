@@ -9,7 +9,7 @@ class InverseDistancePolynomial(nn.Module):
         super().__init__()
         if isinstance(orders, int):
             orders = range(1, orders + 1)
-        self.orders = torch.tensor(orders)  # [num_orders] == [num_params_per_site]
+        self.register_buffer("orders", torch.tensor(orders))
 
     def forward(
         self,
