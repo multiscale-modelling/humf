@@ -1,5 +1,5 @@
 import torch
-from torch import Tensor, nn
+from torch import nn
 
 # TODO: We make the following assumptions:
 # 1. All molecules in the batch have the same number and types of atoms.
