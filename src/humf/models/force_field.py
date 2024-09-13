@@ -16,13 +16,14 @@ class ForceField(L.LightningModule):
         super().__init__()
         self.save_hyperparameters(ignore=["energy_model"])
         self.energy_model = energy_model
+        self.energy_offset = torch.nn.Parameter(torch.tensor(0.0))
         self.learning_rate = learning_rate
         self.trade_off = trade_off
 
     def forward(self, batch) -> tuple[Tensor, Tensor]:
         batch.pos.requires_grad_(True)
 
-        energy = self.energy_model(batch)
+        energy = self.energy_model(batch) + self.energy_offset
 
         grad_outputs: list[Tensor | None] = [torch.ones_like(energy)]
         forces = torch.autograd.grad(
