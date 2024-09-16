@@ -1,5 +1,5 @@
 import torch
-from torch import Tensor, nn
+from torch import nn
 
 # TODO: We make the following assumptions:
 # 1. All molecules in the batch have the same number and types of atoms.
@@ -17,9 +17,10 @@ class AtomCenteredStatic(nn.Module):
         self,
         num_atoms_per_mol: int,
         num_params_per_atom: int,
-        initial_params: Tensor,
+        initial_params,
     ):
         super().__init__()
+        initial_params = torch.tensor(initial_params, dtype=torch.float32)
         assert initial_params.shape == (num_atoms_per_mol, num_params_per_atom)
         self.mol_params = nn.Parameter(initial_params)
         self.num_atoms_per_mol = num_atoms_per_mol
