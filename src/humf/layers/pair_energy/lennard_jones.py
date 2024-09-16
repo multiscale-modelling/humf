@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 
 
@@ -32,8 +33,8 @@ class LennardJones(nn.Module):
         # sigma = torch.sqrt(torch.abs(params_1[:, 1] * params_2[:, 1]) + delta)
 
         # Arithmetic mixing
-        epsilon = 0.5 * (params_1[:, 0] + params_2[:, 0])
-        sigma = 0.5 * (params_1[:, 1] + params_2[:, 1])
+        epsilon = 0.5 * (torch.abs(params_1[:, 0]) + torch.abs(params_2[:, 0]))
+        sigma = 0.5 * (torch.abs(params_1[:, 1]) + torch.abs(params_2[:, 1]))
 
         r = sigma / distances
         r6 = r**6
