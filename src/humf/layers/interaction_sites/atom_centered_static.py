@@ -8,27 +8,28 @@ from torch import nn
 # Can the classifier guarantee these assumptions?
 
 # TODO: Should we allow for constraints?
-# For example, when we use this layer for OHH molecules,
-# `mol_params[1]` should be identical to `mol_params[2]`.
+# For example, when we use this layer for coulomb charges,
+# the charges should sum to some integer for each molecule.
 
 
 class AtomCenteredStatic(nn.Module):
     def __init__(
         self,
-        num_atoms_per_mol: int,
-        num_params_per_atom: int,
-        initial_params,
+        initial_type_params,
+        type_index,
     ):
         super().__init__()
-        initial_params = torch.tensor(initial_params, dtype=torch.float32)
-        assert initial_params.shape == (num_atoms_per_mol, num_params_per_atom)
-        self.mol_params = nn.Parameter(initial_params)
-        self.num_atoms_per_mol = num_atoms_per_mol
+        initial_type_params = torch.tensor(initial_type_params, dtype=torch.float32)
+        self.type_params = nn.Parameter(initial_type_params)
+        self.type_index = self.register_buffer(
+            "type_index", torch.tensor(type_index, dtype=torch.int64)
+        )
+        self.num_atoms_per_mol = len(type_index)
 
     def forward(self, batch):
         sites_pos = batch.pos
         num_molecules = batch.pos.shape[0] // self.num_atoms_per_mol
-        sites_params = self.mol_params.repeat(num_molecules, 1)
+        sites_params = self.type_params[self.type_index].repeat(num_molecules, 1)
         sites_batch = (
             batch.batch
             if batch.batch is not None
