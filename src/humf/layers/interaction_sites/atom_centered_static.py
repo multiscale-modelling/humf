@@ -21,9 +21,7 @@ class AtomCenteredStatic(nn.Module):
         super().__init__()
         initial_type_params = torch.tensor(initial_type_params, dtype=torch.float32)
         self.type_params = nn.Parameter(initial_type_params)
-        self.type_index = self.register_buffer(
-            "type_index", torch.tensor(type_index, dtype=torch.int64)
-        )
+        self.register_buffer("type_index", torch.tensor(type_index, dtype=torch.int64))
         self.num_atoms_per_mol = len(type_index)
 
     def forward(self, batch):
