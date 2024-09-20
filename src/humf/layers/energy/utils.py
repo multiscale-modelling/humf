@@ -1,5 +1,12 @@
 import torch
 
+# TODO: This implementation compares each pair of interaction sites to
+# determine if they should interact. In an MD application, we initially obtain
+# a neighbor list from the MD software that represents a graph. We should
+# determine pairs of interacting sites from the information in that graph, i.e.
+# two sites interact if they belong to molecules that are interconnected
+# through a long distance edge.
+
 
 def get_pairs(sites_pos, sites_params, sites_batch, sites_mol):
     same_frame = sites_batch.unsqueeze(0) == sites_batch.unsqueeze(1)
