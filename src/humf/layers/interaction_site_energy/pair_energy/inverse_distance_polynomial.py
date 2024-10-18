@@ -9,19 +9,19 @@ class InverseDistancePolynomial(nn.Module):
         super().__init__()
         if isinstance(orders, int):
             orders = range(1, orders + 1)
-        self.register_buffer("orders", torch.tensor(orders))
+        self.register_buffer("orders", torch.tensor(orders))  # [num_parameters]
 
     def forward(
         self,
         distances,  # [num_pairs]
-        parameters,  # [num_pairs, 2, num_params_per_site]
+        parameters,  # [2, num_pairs, num_parameters]
     ):
         inverse_distances = 1 / distances  # [num_pairs]
         inverse_distance_powers = (
             inverse_distances.unsqueeze(1) ** self.orders
-        )  # [num_pairs, num_params_per_site]
+        )  # [num_pairs, num_parameters]
 
-        mixed_parameters = parameters[:, 0] * parameters[:, 1]
+        mixed_parameters = parameters[0] * parameters[1]  # [num_pairs, num_parameters]
 
         energies = torch.sum(
             inverse_distance_powers * mixed_parameters, dim=1

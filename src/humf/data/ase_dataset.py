@@ -2,12 +2,8 @@ import torch
 from ase import io
 from torch_geometric.data import Data, InMemoryDataset
 
-from humf.data.utils import has_nans
-
 
 class ASEDataset(InMemoryDataset):
-    """Read dataset from an XYZ file written by ASE."""
-
     def __init__(
         self,
         root,
@@ -46,7 +42,12 @@ class ASEDataset(InMemoryDataset):
                 energy=energy,
                 **info,
             )
-            if has_nans(data):
-                raise ValueError("Data contains NaNs.")
             data_list.append(data)
+
+        if self.pre_filter is not None:
+            data_list = [data for data in data_list if self.pre_filter(data)]
+
+        if self.pre_transform is not None:
+            data_list = [self.pre_transform(data) for data in data_list]
+
         self.save(data_list, self.processed_paths[0])

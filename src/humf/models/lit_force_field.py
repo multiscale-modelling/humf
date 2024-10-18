@@ -6,36 +6,21 @@ from torch import Tensor
 from torch.nn import Module
 
 
-class ForceField(L.LightningModule):
+class LitForceField(L.LightningModule):
     def __init__(
         self,
-        energy_model: Module,
+        force_field: Module,
         learning_rate: float,
-        trade_off: float,
+        energy_weight: float,
     ):
         super().__init__()
-        self.save_hyperparameters(ignore=["energy_model"])
-        self.energy_model = energy_model
-        self.energy_offset = torch.nn.Parameter(torch.tensor(0.0))
+        self.save_hyperparameters(ignore=["force_field"])
+        self.force_field = force_field
         self.learning_rate = learning_rate
-        self.trade_off = trade_off
+        self.energy_weight = energy_weight
 
     def forward(self, batch) -> tuple[Tensor, Tensor]:
-        batch.pos.requires_grad_(True)
-
-        energy = self.energy_model(batch) + self.energy_offset
-
-        grad_outputs: list[Tensor | None] = [torch.ones_like(energy)]
-        forces = torch.autograd.grad(
-            [energy],
-            [batch.pos],
-            grad_outputs=grad_outputs,  # type: ignore
-            create_graph=True,
-        )[0]
-        assert forces is not None
-        forces = -forces
-
-        return energy, forces
+        return self.force_field(batch)
 
     def training_step(self, batch):
         metrics = self._common_step(batch)
@@ -68,7 +53,7 @@ class ForceField(L.LightningModule):
         loss_forces = torch.nn.functional.mse_loss(
             predicted_forces, target_forces, reduction="sum"
         ) / predicted_forces.size(0)
-        loss = loss_energy * self.trade_off + loss_forces * (1 - self.trade_off)
+        loss = loss_energy * self.energy_weight + loss_forces * (1 - self.energy_weight)
         metrics = {
             "loss": loss,
             "loss_energy": loss_energy,
