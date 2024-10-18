@@ -34,6 +34,8 @@ class AtomCenteredStaticSites(Module):
     ) -> tuple[Tensor, Tensor, Tensor, Tensor]:
         del molecule_types
         sites_positions = batch.positions
+        sites_parameters = self.type_parameters[molecule_atom_types]
+        sites_edge_index = batch.edge_index[:, interaction_types == 1]
         sites_batch = (
             batch.batch
             if batch.batch is not None
@@ -45,7 +47,7 @@ class AtomCenteredStaticSites(Module):
         )
         return (
             sites_positions,
-            self.type_parameters[molecule_atom_types],
-            batch.edge_index[:, interaction_types == 1],
+            sites_parameters,
+            sites_edge_index,
             sites_batch,
         )

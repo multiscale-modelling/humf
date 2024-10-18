@@ -13,7 +13,7 @@ class Coulomb(nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, distances, charges_1, charges_2):
+    def forward(self, distances, charges):
         """Electrostatic energies between pairs of charges.
 
         Parameters
@@ -21,16 +21,14 @@ class Coulomb(nn.Module):
         distances : torch.Tensor
             Tensor of shape (num_pairs,) with the distances between pairs of charges,
             in units of Angstrom.
-        charges_1 : torch.Tensor
-            Tensor of shape (num_pairs,) with the charges of the first atom in each pair,
-            in units of elementary charge.
-        charges_2 : torch.Tensor
-            As charges_1, but for the second atom in each pair.
+        charges : torch.Tensor
+            Tensor of shape (2, num_pairs,) with the charges of the atoms in
+            each pair, in units of elementary charge.
 
         Returns
         -------
         torch.Tensor
-            Tensor of shape (num_pairs,) with the electrostatic energies between pairs of charges,
-            in units of kcal/mol.
+            Tensor of shape (num_pairs,) with the electrostatic energies
+            between pairs of charges, in units of kcal/mol.
         """
-        return CONVERSION_FACTOR * charges_1 * charges_2 / distances
+        return CONVERSION_FACTOR * charges[0] * charges[1] / distances
