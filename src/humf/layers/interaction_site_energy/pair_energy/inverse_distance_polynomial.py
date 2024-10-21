@@ -16,12 +16,15 @@ class InverseDistancePolynomial(nn.Module):
         distances,  # [num_pairs]
         parameters,  # [2, num_pairs, num_parameters]
     ):
+        assert parameters.size(2) == self.orders.size(0)
         inverse_distances = 1 / distances  # [num_pairs]
         inverse_distance_powers = (
             inverse_distances.unsqueeze(1) ** self.orders
         )  # [num_pairs, num_parameters]
 
-        mixed_parameters = parameters[0] * parameters[1]  # [num_pairs, num_parameters]
+        mixed_parameters = 0.5 * (
+            parameters[0] + parameters[1]
+        )  # [num_pairs, num_parameters]
 
         energies = torch.sum(
             inverse_distance_powers * mixed_parameters, dim=1

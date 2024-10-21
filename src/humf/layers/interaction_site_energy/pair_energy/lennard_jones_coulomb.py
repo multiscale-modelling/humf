@@ -15,10 +15,6 @@ class LennardJonesCoulomb(Module):
         distances,  # [num_pairs]
         parameters,  # [2, num_pairs, 3] (epsilon, sigma, charge)
     ):
-        lj_contribs = self.lennard_jones(
-            distances, parameters[0, :, :2], parameters[1, :, :2]
-        )
-        coulomb_contribs = self.coulomb(
-            distances, parameters[0, :, 2], parameters[1, :, 2]
-        )
+        lj_contribs = self.lennard_jones(distances, parameters[:, :, :2])
+        coulomb_contribs = self.coulomb(distances, parameters[:, :, 2])
         return lj_contribs + coulomb_contribs
